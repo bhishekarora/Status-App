@@ -1,0 +1,57 @@
+<script src="jq.js" ></script>
+<script src="hw.js" ></script>
+<script
+>
+var status;
+a();
+setInterval(a,50000);
+  
+function a() { $.getJSON('', function(data) {
+// JSON result in `data` variable
+// alert(data[1]);
+console.log(data);
+console.log(data.resource.energy_source);
+var timer, sound;
+sound = new Howl({
+  src: ['beep.mp3']
+});
+
+if(data.resource.energy_source =='GRID')
+{
+    if(status!=='GRID')
+    sound.play();
+
+    status='GRID';
+$('body').css("background-color", "green");
+
+
+
+}
+else{
+$('body').css("background-color", "red");
+if(status=='GRID')
+sound.play();
+
+status='DG';
+}
+$('#1').text(data.resource.daily_dg_amount);
+$('#2').text(+data.resource.daily_grid_amount);
+//$('#3').text(data.resource.energy_source);
+});
+
+$('#updated').text("Updated:"+ new Date().toLocaleString("en-US", {timeZone: 'Asia/Kolkata'}));
+}
+</script>
+
+<body bgcolor="green">
+    <div> <p  style="  color:white; font-size: 1000%;" >DG</p>
+        
+        <p id="1" style="  color:white; font-size: 1000%;" ></p>
+        <p  style="  color:white; font-size: 1000%;" >GRID</p>
+        
+        <p id="2" style="color:white; font-size: 1000%;" ></p>
+
+    </div>
+     
+ <p id="updated" style="color:white;font-size: 300%;"></p>
+</body>
